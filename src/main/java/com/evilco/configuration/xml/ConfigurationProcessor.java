@@ -15,6 +15,9 @@ import sun.reflect.ReflectionFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -338,6 +341,22 @@ public class ConfigurationProcessor<T> {
 
 		// serialize data
 		this.SetData (document, root, object, null);
+
+		// write into file
+		try {
+			Transformer transformer = TransformerFactory.newInstance ().newTransformer ();
+
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setOutputProperty ("{http://xml.apache.org/xslt}indent-amount", "8");
+
+			Result output = new StreamResult (stream);
+			Source source = new DOMSource (document);
+
+			transformer.transform (source, output);
+		} catch (TransformerException ex) {
+			throw new ConfigurationProcessorException (ex);
+		}
 	}
 
 	/**
