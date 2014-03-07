@@ -1,8 +1,8 @@
 package com.evilco.configuration.xml.exception;
 
 /**
- * @package com.evilco.configuration.xml.exception
  * @author Johannes Donath <johannesd@evil-co.com>
+ * @package com.evilco.configuration.xml.exception
  * @copyright Copyright (C) 2014 Evil-Co <http://www.evil-co.org>
  */
 public class ConfigurationProcessorException extends ConfigurationException {

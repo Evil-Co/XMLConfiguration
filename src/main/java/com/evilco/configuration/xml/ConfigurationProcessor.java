@@ -44,11 +44,13 @@ public class ConfigurationProcessor<T> {
 
 	/**
 	 * Constructs a new ConfigurationException for a object.
+	 *
 	 * @param objectType
 	 */
 	public ConfigurationProcessor (Class<T> objectType) throws ConfigurationProcessorException {
 		// verify
-		if (!objectType.isAnnotationPresent (Configuration.class)) throw new ConfigurationProcessorException ("Invalid configuration type.");
+		if (!objectType.isAnnotationPresent (Configuration.class))
+			throw new ConfigurationProcessorException ("Invalid configuration type.");
 
 		// store
 		this.objectType = objectType;
@@ -59,6 +61,7 @@ public class ConfigurationProcessor<T> {
 
 	/**
 	 * De-Serializes the data.
+	 *
 	 * @param parent
 	 * @param type
 	 * @param childName
@@ -77,7 +80,8 @@ public class ConfigurationProcessor<T> {
 					NodeList elementList = parent.getElementsByTagNameNS (this.objectMetadata.namespace (), childName);
 
 					// verify list
-					if (elementList.getLength () == 0) throw new ConfigurationLoadException ("Could not find element " + childName + ".");
+					if (elementList.getLength () == 0)
+						throw new ConfigurationLoadException ("Could not find element " + childName + ".");
 
 					// get correct element
 					parent = ((Element) elementList.item (0));
@@ -91,7 +95,8 @@ public class ConfigurationProcessor<T> {
 					NodeList elementList = parent.getElementsByTagNameNS (this.objectMetadata.namespace (), childName);
 
 					// verify list
-					if (elementList.getLength () == 0) throw new ConfigurationLoadException ("Could not find element " + childName + ".");
+					if (elementList.getLength () == 0)
+						throw new ConfigurationLoadException ("Could not find element " + childName + ".");
 
 					// get correct element
 					parent = ((Element) elementList.item (0));
@@ -107,7 +112,8 @@ public class ConfigurationProcessor<T> {
 					NodeList elementList = parent.getElementsByTagNameNS (this.objectMetadata.namespace (), childName);
 
 					// verify list
-					if (elementList.getLength () == 0) throw new ConfigurationLoadException ("Could not find element " + childName + ".");
+					if (elementList.getLength () == 0)
+						throw new ConfigurationLoadException ("Could not find element " + childName + ".");
 
 					// get correct element
 					parent = ((Element) elementList.item (0));
@@ -121,7 +127,8 @@ public class ConfigurationProcessor<T> {
 					NodeList elementList = parent.getElementsByTagNameNS (this.objectMetadata.namespace (), childName);
 
 					// verify list
-					if (elementList.getLength () == 0) throw new ConfigurationLoadException ("Could not find element " + childName + ".");
+					if (elementList.getLength () == 0)
+						throw new ConfigurationLoadException ("Could not find element " + childName + ".");
 
 					// get correct element
 					parent = ((Element) elementList.item (0));
@@ -135,7 +142,8 @@ public class ConfigurationProcessor<T> {
 					NodeList elementList = parent.getElementsByTagNameNS (this.objectMetadata.namespace (), childName);
 
 					// verify list
-					if (elementList.getLength () == 0) throw new ConfigurationLoadException ("Could not find element " + childName + ".");
+					if (elementList.getLength () == 0)
+						throw new ConfigurationLoadException ("Could not find element " + childName + ".");
 
 					// get correct element
 					parent = ((Element) elementList.item (0));
@@ -190,7 +198,8 @@ public class ConfigurationProcessor<T> {
 					NodeList elementList = parent.getElementsByTagNameNS (this.objectMetadata.namespace (), childName);
 
 					// verify list
-					if (elementList.getLength () == 0) throw new ConfigurationLoadException ("Could not find element " + childName + ".");
+					if (elementList.getLength () == 0)
+						throw new ConfigurationLoadException ("Could not find element " + childName + ".");
 
 					// get correct element
 					parent = ((Element) elementList.item (0));
@@ -239,7 +248,8 @@ public class ConfigurationProcessor<T> {
 						NodeList parentElements = propertyParent.getElementsByTagNameNS (this.objectMetadata.namespace (), parentName);
 
 						//verify
-						if (parentElements.getLength () == 0) throw new ConfigurationLoadException ("Could not find parent element for field " + field.getName () + ".");
+						if (parentElements.getLength () == 0)
+							throw new ConfigurationLoadException ("Could not find parent element for field " + field.getName () + ".");
 
 						// get element
 						parent = ((Element) parentElements.item (0));
@@ -263,7 +273,8 @@ public class ConfigurationProcessor<T> {
 					NodeList elementList = parent.getElementsByTagNameNS (this.objectMetadata.namespace (), childName);
 
 					// verify list
-					if (elementList.getLength () == 0) throw new ConfigurationLoadException ("Could not find element " + childName + ".");
+					if (elementList.getLength () == 0)
+						throw new ConfigurationLoadException ("Could not find element " + childName + ".");
 
 					// get correct element
 					parent = ((Element) elementList.item (0));
@@ -279,6 +290,7 @@ public class ConfigurationProcessor<T> {
 
 	/**
 	 * Loads a configuration file.
+	 *
 	 * @param stream
 	 * @return
 	 * @throws com.evilco.configuration.xml.exception.ConfigurationException
@@ -313,6 +325,7 @@ public class ConfigurationProcessor<T> {
 
 	/**
 	 * Saves an object.
+	 *
 	 * @param object
 	 * @param stream
 	 * @throws ConfigurationException
@@ -346,8 +359,8 @@ public class ConfigurationProcessor<T> {
 		try {
 			Transformer transformer = TransformerFactory.newInstance ().newTransformer ();
 
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setOutputProperty (OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty (OutputKeys.ENCODING, "UTF-8");
 			transformer.setOutputProperty ("{http://xml.apache.org/xslt}indent-amount", "8");
 
 			Result output = new StreamResult (stream);
@@ -361,6 +374,7 @@ public class ConfigurationProcessor<T> {
 
 	/**
 	 * Serializes objects into XML.
+	 *
 	 * @param document
 	 * @param parent
 	 * @param object
@@ -459,8 +473,7 @@ public class ConfigurationProcessor<T> {
 							if (parentList.getLength () == 0) {
 								fieldParent = document.createElementNS (this.objectMetadata.namespace (), propertyWrapper.value ());
 								parent.appendChild (fieldParent);
-							} else
-								fieldParent = ((Element) parentList.item (0));
+							} else fieldParent = ((Element) parentList.item (0));
 
 							// store data
 							this.SetData (document, fieldParent, field.get (object), field.getAnnotation (ConfigurationProperty.class).value ());

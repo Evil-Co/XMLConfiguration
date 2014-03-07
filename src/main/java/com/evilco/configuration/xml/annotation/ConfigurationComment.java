@@ -15,6 +15,7 @@ public @interface ConfigurationComment {
 
 	/**
 	 * Defines the comment value.
+	 *
 	 * @return
 	 */
 	public String value ();

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @package com.evilco.configuration.xml
  * @author Johannes Donath <johannesd@evil-co.com>
+ * @package com.evilco.configuration.xml
  * @copyright Copyright (C) 2014 Evil-Co <http://www.evil-co.org>
  */
 public enum ConfigurationPropertyType {
@@ -38,6 +38,7 @@ public enum ConfigurationPropertyType {
 
 	/**
 	 * Constructs a new ConfigurationpropertyType value.
+	 *
 	 * @param type
 	 */
 	private ConfigurationPropertyType (Class<?> type) {
@@ -46,6 +47,7 @@ public enum ConfigurationPropertyType {
 
 	/**
 	 * Converts a type into a property type.
+	 *
 	 * @param type
 	 * @return
 	 */
@@ -55,7 +57,8 @@ public enum ConfigurationPropertyType {
 
 		// get representation
 		for (ConfigurationPropertyType propertyType : ConfigurationPropertyType.values ()) {
-			if (propertyType.getType () != null && propertyType.getType ().isAssignableFrom (type)) return propertyType;
+			if (propertyType.getType () != null && propertyType.getType ().isAssignableFrom (type))
+				return propertyType;
 		}
 
 		// fallback
