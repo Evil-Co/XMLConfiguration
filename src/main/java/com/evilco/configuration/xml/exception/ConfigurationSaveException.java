@@ -1,8 +1,7 @@
 package com.evilco.configuration.xml.exception;
 
 /**
- * @author Johannes Donath <johannesd@evil-co.com>
- * @package com.evilco.configuration.xml.exception
+ * @auhtor Johannes Donath <johannesd@evil-co.com>
  * @copyright Copyright (C) 2014 Evil-Co <http://www.evil-co.org>
  */
 public class ConfigurationSaveException extends ConfigurationException {
@@ -21,5 +20,9 @@ public class ConfigurationSaveException extends ConfigurationException {
 
 	public ConfigurationSaveException (Throwable cause) {
 		super (cause);
+	}
+
+	protected ConfigurationSaveException (String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+		super (message, cause, enableSuppression, writableStackTrace);
 	}
 }

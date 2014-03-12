@@ -1,5 +1,7 @@
 package com.evilco.configuration.xml.annotation;
 
+import com.evilco.configuration.xml.adapter.IAdapter;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,17 +13,18 @@ import java.lang.annotation.Target;
  */
 @Retention (RetentionPolicy.RUNTIME)
 @Target (ElementType.TYPE)
-public @interface Configuration {
+public @interface Adapter {
 
 	/**
-	 * Defines the root element name.
+	 * Defines the adapters to register.
 	 * @return
 	 */
-	public String name () default "configuration";
+	public Class<? extends IAdapter>[] value ();
 
 	/**
-	 * Defines the XML namespace to use.
-	 * @return
+	 * Marks an adapter as sharable.
 	 */
-	public String namespace () default "http://www.evil-co.org/2014/configuration";
+	@Retention (RetentionPolicy.RUNTIME)
+	@Target (ElementType.TYPE)
+	public static @interface Sharable { }
 }

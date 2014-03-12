@@ -11,17 +11,23 @@ import java.lang.annotation.Target;
  */
 @Retention (RetentionPolicy.RUNTIME)
 @Target (ElementType.TYPE)
-public @interface Configuration {
+public @interface TypeAdapterDefinition {
 
 	/**
-	 * Defines the root element name.
+	 * Defines the input type.
 	 * @return
 	 */
-	public String name () default "configuration";
+	public Class<?> input ();
 
 	/**
-	 * Defines the XML namespace to use.
+	 * Defines the output type.
 	 * @return
 	 */
-	public String namespace () default "http://www.evil-co.org/2014/configuration";
+	public Class<?> output ();
+
+	/**
+	 * Indicates whether the adapter instance can be shared.
+	 * @return
+	 */
+	public boolean sharable () default true;
 }

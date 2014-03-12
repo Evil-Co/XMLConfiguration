@@ -1,8 +1,7 @@
 package com.evilco.configuration.xml.exception;
 
 /**
- * @author Johannes Donath <johannesd@evil-co.com>
- * @package com.evilco.bukkit.util.plugin.configuration.exception
+ * @auhtor Johannes Donath <johannesd@evil-co.com>
  * @copyright Copyright (C) 2014 Evil-Co <http://www.evil-co.org>
  */
 public abstract class ConfigurationException extends Exception {
@@ -21,5 +20,9 @@ public abstract class ConfigurationException extends Exception {
 
 	public ConfigurationException (Throwable cause) {
 		super (cause);
+	}
+
+	protected ConfigurationException (String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+		super (message, cause, enableSuppression, writableStackTrace);
 	}
 }

@@ -10,18 +10,12 @@ import java.lang.annotation.Target;
  * @copyright Copyright (C) 2014 Evil-Co <http://www.evil-co.org>
  */
 @Retention (RetentionPolicy.RUNTIME)
-@Target (ElementType.TYPE)
-public @interface Configuration {
+@Target (ElementType.FIELD)
+public @interface Property {
 
 	/**
-	 * Defines the root element name.
+	 * Defines the property name.
 	 * @return
 	 */
-	public String name () default "configuration";
-
-	/**
-	 * Defines the XML namespace to use.
-	 * @return
-	 */
-	public String namespace () default "http://www.evil-co.org/2014/configuration";
+	public String value ();
 }

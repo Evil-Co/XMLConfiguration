@@ -1,8 +1,7 @@
 package com.evilco.configuration.xml.exception;
 
 /**
- * @author Johannes Donath <johannesd@evil-co.com>
- * @package com.evilco.configuration.xml.exception
+ * @auhtor Johannes Donath <johannesd@evil-co.com>
  * @copyright Copyright (C) 2014 Evil-Co <http://www.evil-co.org>
  */
 public class ConfigurationProcessorException extends ConfigurationException {
@@ -21,5 +20,9 @@ public class ConfigurationProcessorException extends ConfigurationException {
 
 	public ConfigurationProcessorException (Throwable cause) {
 		super (cause);
+	}
+
+	protected ConfigurationProcessorException (String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+		super (message, cause, enableSuppression, writableStackTrace);
 	}
 }
