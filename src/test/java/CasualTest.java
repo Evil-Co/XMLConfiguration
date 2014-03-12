@@ -102,6 +102,21 @@ public class CasualTest {
 	}
 
 	/**
+	 * Tests whether the document namespace is added.
+	 */
+	@Test
+	public void namespaceTest () throws ConfigurationException {
+		// create marshaller
+		IMarshaller<ConfigurationTest> marshaller = ConfigurationProcessor.getInstance ().createMarshaller (ConfigurationTest.class);
+
+		// marshal object
+		Document document = marshaller.marshal (new ConfigurationTest ());
+
+		// check namespace
+		Assert.assertEquals (ROOT_ELEMENT_NAMESPACE, document.getDocumentElement ().getNamespaceURI ());
+	}
+
+	/**
 	 * Tests the processor instantiation.
 	 */
 	@Test
