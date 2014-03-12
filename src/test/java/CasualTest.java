@@ -128,7 +128,7 @@ public class CasualTest {
 	/**
 	 * Tests the processor instantiation.
 	 */
-	@Test (expected = ConfigurationException.class)
+	@Test
 	public void processorInstanceTest () {
 		Assert.assertNotNull ("The ConfigurationProcessor does not return a valid instance", ConfigurationProcessor.getInstance ());
 		Assert.assertEquals ("The ConfigurationProcessor does not return a singleton", ConfigurationProcessor.getInstance (), ConfigurationProcessor.getInstance ());
@@ -151,7 +151,7 @@ public class CasualTest {
 	 * Tests the Un-Marshaller validation.
 	 * @throws ConfigurationException
 	 */
-	@Test
+	@Test (expected = ConfigurationException.class)
 	public void unmarshallerValidationTest () throws ConfigurationException {
 		ConfigurationProcessor.getInstance ().createUnmarshaller (Object.class);
 	}
