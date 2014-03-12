@@ -6,11 +6,14 @@ import com.evilco.configuration.xml.IUnmarshaller;
 import com.evilco.configuration.xml.annotation.AdapterDefinition;
 import com.evilco.configuration.xml.annotation.Configuration;
 import com.evilco.configuration.xml.exception.ConfigurationException;
+import com.evilco.configuration.xml.exception.ConfigurationProcessorException;
+import com.evilco.configuration.xml.exception.ConfigurationSetupException;
 import com.google.common.base.Preconditions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -88,11 +91,33 @@ public class ListAdapter implements IAdapter<List> {
 		Preconditions.checkNotNull (field, "Lists are required to be inside of objects and cannot be nested."); // FIXME: We might be able to work around this
 
 		// find type
-		ParameterizedType parameterizedType = ((ParameterizedType) field.getGenericType ());
+		ParameterizedType parameterizedType = (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ()));
 		Class<?> listType = ((Class<?>) parameterizedType.getActualTypeArguments ()[0]);
 
 		// create new list
-		List instance = new ArrayList ();
+		List instance = null;
+
+		if (field.getGenericType () instanceof ParameterizedType)
+			instance = new ArrayList ();
+		else {
+			try {
+				// find correct type
+				Class<? extends List> advancedListType = field.getType ().asSubclass (List.class);
+
+				// get constructor
+				Constructor<? extends List> listConstructor = advancedListType.getConstructor ();
+
+				// make accessible
+				listConstructor.setAccessible (true);
+
+				// construct a new list
+				instance = listConstructor.newInstance ();
+			} catch (NoSuchMethodException ex) {
+				throw new ConfigurationSetupException ("List of type " + field.getType ().getName () + " does not have a default no-argument constructor");
+			} catch (Exception ex) {
+				throw new ConfigurationProcessorException (ex);
+			}
+		}
 
 		// search elements
 		NodeList elementList = element.getElementsByTagNameNS (this.unmarshaller.getTypeConfiguration ().namespace (), child.getTagName ());
