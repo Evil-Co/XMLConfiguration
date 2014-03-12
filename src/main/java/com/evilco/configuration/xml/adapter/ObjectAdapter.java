@@ -156,6 +156,9 @@ public class ObjectAdapter implements IAdapter<Object> {
 
 		// iterate over fields
 		for (Field objectField : type.getFields ()) {
+			// make field accessible
+			objectField.setAccessible (true);
+
 			// skip ignored fields
 			if (!objectField.isAnnotationPresent (Property.class)) continue;
 
@@ -181,9 +184,6 @@ public class ObjectAdapter implements IAdapter<Object> {
 				fieldElement = document.createElementNS (this.unmarshaller.getTypeConfiguration ().namespace (), objectField.getAnnotation (Property.class).value ());
 			else
 				fieldElement = ((Element) fieldList.item (0));
-
-			// make field accessible
-			objectField.setAccessible (true);
 
 			// un-marshal
 			try {
