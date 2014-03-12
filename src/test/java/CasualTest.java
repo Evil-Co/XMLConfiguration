@@ -51,6 +51,14 @@ public class CasualTest {
 
 		// verify
 		Assert.assertNotNull ("Un-Marshalling the document did not return a valid object", testObject1);
+
+		// verify object
+		Assert.assertEquals ("One of the variables does not match (boolean)", testObject.booleanVariable, testObject1.booleanVariable);
+		Assert.assertEquals ("One of the variables does not match (double)", testObject.doubleVariable, testObject1.doubleVariable);
+		Assert.assertEquals ("One of the variables does not match (enum)", testObject.enumVariable, testObject1.enumVariable);
+		Assert.assertEquals ("One of the variables does not match (float)", testObject.floatVariable, testObject1.floatVariable);
+		Assert.assertEquals ("One of the variables does not match (integer)", testObject.integerVariable, testObject1.integerVariable);
+		Assert.assertEquals ("One of the variables does not match (string)", testObject.stringVariable, testObject1.stringVariable);
 	}
 
 	/**
