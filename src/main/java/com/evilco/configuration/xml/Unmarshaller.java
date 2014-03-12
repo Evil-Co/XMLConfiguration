@@ -4,7 +4,6 @@ import com.evilco.configuration.xml.adapter.IAdapter;
 import com.evilco.configuration.xml.adapter.ITypeAdapter;
 import com.evilco.configuration.xml.exception.AdapterInitializationException;
 import com.evilco.configuration.xml.exception.ConfigurationException;
-import com.evilco.configuration.xml.exception.ConfigurationProcessorException;
 import com.google.common.base.Preconditions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

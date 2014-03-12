@@ -5,7 +5,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.lang.reflect.Field;
-import java.util.List;
 
 /**
  * @auhtor Johannes Donath <johannesd@evil-co.com>

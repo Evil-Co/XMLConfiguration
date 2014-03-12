@@ -10,7 +10,6 @@ import com.evilco.configuration.xml.exception.ConfigurationException;
 import com.evilco.configuration.xml.exception.ConfigurationSetupException;
 import com.google.common.base.Preconditions;
 
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
