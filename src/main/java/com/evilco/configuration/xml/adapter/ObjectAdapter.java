@@ -151,7 +151,7 @@ public class ObjectAdapter implements IAdapter<Object> {
 		} catch (NoSuchMethodException ex) {
 			throw new ConfigurationSetupException ("Could not unmarshal object of type " + type.getName () + ": Missing default no-argument constructor.");
 		} catch (Exception ex) {
-			throw new ConfigurationSetupException (ex);
+			throw new ConfigurationSetupException ("Could not create an instance of type " + type.getName (), ex);
 		}
 
 		// iterate over fields

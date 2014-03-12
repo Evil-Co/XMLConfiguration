@@ -115,7 +115,7 @@ public class ListAdapter implements IAdapter<List> {
 			} catch (NoSuchMethodException ex) {
 				throw new ConfigurationSetupException ("List of type " + field.getType ().getName () + " does not have a default no-argument constructor");
 			} catch (Exception ex) {
-				throw new ConfigurationProcessorException (ex);
+				throw new ConfigurationProcessorException ("Could not create an instance of list type " + field.getType ().getName (), ex);
 			}
 		}
 
