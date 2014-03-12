@@ -107,8 +107,7 @@ public class CasualTest {
 	 */
 	@Test (expected = ConfigurationException.class)
 	public void marshallerValidationTest () throws ConfigurationException {
-		// get marshaller
-		IMarshaller<Object> marshaller = ConfigurationProcessor.getInstance ().createMarshaller (Object.class);
+		ConfigurationProcessor.getInstance ().createMarshaller (Object.class);
 	}
 
 	/**
