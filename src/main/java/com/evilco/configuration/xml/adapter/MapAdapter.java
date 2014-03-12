@@ -6,10 +6,13 @@ import com.evilco.configuration.xml.IUnmarshaller;
 import com.evilco.configuration.xml.annotation.AdapterDefinition;
 import com.evilco.configuration.xml.annotation.Configuration;
 import com.evilco.configuration.xml.exception.ConfigurationException;
+import com.evilco.configuration.xml.exception.ConfigurationProcessorException;
+import com.evilco.configuration.xml.exception.ConfigurationSetupException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
@@ -90,12 +93,31 @@ public class MapAdapter implements IAdapter<Map> {
 	 */
 	@Override
 	public Map unmarshal (Document document, Element element, Element child, Field field, Class<?> type) throws ConfigurationException {
-		// create map
-		Map<String, Object> map = new HashMap<> ();
-
 		// get type
-		ParameterizedType parameterizedType = ((ParameterizedType) field.getGenericType ());
+		ParameterizedType parameterizedType = (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ()));
 		Class<?> mapType = ((Class<?>) parameterizedType.getActualTypeArguments ()[1]);
+
+		// create map
+		Map<String, Object> map = null;
+
+		if (field.getGenericType () instanceof ParameterizedType)
+			map = new HashMap<> ();
+		else {
+			try {
+				// get type
+				Class<? extends Map> mapClass = field.getType ().asSubclass (Map.class);
+
+				// find constructor
+				Constructor<? extends Map> constructor = mapClass.getConstructor ();
+
+				// create instance
+				map = constructor.newInstance ();
+			} catch (NoSuchMethodException ex) {
+				throw new ConfigurationSetupException ("The map of type " + field.getType ().getName () + " does not have a default no-argument constructor");
+			} catch (Exception ex) {
+				throw new ConfigurationProcessorException ("Could not create an instance of type " + field.getType ().getName (), ex);
+			}
+		}
 
 		// find all nodes
 		NodeList nodeList = element.getElementsByTagNameNS (this.unmarshaller.getTypeConfiguration ().namespace (), child.getTagName ());
