@@ -5,6 +5,7 @@ import com.evilco.configuration.xml.IMarshaller;
 import com.evilco.configuration.xml.IUnmarshaller;
 import com.evilco.configuration.xml.annotation.AdapterDefinition;
 import com.evilco.configuration.xml.annotation.Configuration;
+import com.evilco.configuration.xml.annotation.InnerType;
 import com.evilco.configuration.xml.exception.ConfigurationException;
 import com.evilco.configuration.xml.exception.ConfigurationProcessorException;
 import com.evilco.configuration.xml.exception.ConfigurationSetupException;
@@ -96,6 +97,9 @@ public class MapAdapter implements IAdapter<Map> {
 		// get type
 		ParameterizedType parameterizedType = (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ()));
 		Class<?> mapType = ((Class<?>) parameterizedType.getActualTypeArguments ()[1]);
+
+		// correct type
+		if (field.isAnnotationPresent (InnerType.class)) mapType = field.getAnnotation (InnerType.class).value ();
 
 		// create map
 		Map<String, Object> map = null;

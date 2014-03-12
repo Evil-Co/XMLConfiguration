@@ -5,6 +5,7 @@ import com.evilco.configuration.xml.IMarshaller;
 import com.evilco.configuration.xml.IUnmarshaller;
 import com.evilco.configuration.xml.annotation.AdapterDefinition;
 import com.evilco.configuration.xml.annotation.Configuration;
+import com.evilco.configuration.xml.annotation.InnerType;
 import com.evilco.configuration.xml.exception.ConfigurationException;
 import com.evilco.configuration.xml.exception.ConfigurationProcessorException;
 import com.evilco.configuration.xml.exception.ConfigurationSetupException;
@@ -93,6 +94,9 @@ public class ListAdapter implements IAdapter<List> {
 		// find type
 		ParameterizedType parameterizedType = (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ()));
 		Class<?> listType = ((Class<?>) parameterizedType.getActualTypeArguments ()[0]);
+
+		// correct type
+		if (field.isAnnotationPresent (InnerType.class)) listType = field.getAnnotation (InnerType.class).value ();
 
 		// create new list
 		List instance = null;
