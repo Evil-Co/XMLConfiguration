@@ -102,6 +102,16 @@ public class CasualTest {
 	}
 
 	/**
+	 * Tests the marshaller validation.
+	 * @throws ConfigurationException
+	 */
+	@Test (expected = ConfigurationException.class)
+	public void marshallerValidationTest () throws ConfigurationException {
+		// get marshaller
+		IMarshaller<Object> marshaller = ConfigurationProcessor.getInstance ().createMarshaller (Object.class);
+	}
+
+	/**
 	 * Tests whether the document namespace is added.
 	 */
 	@Test
