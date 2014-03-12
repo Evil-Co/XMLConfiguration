@@ -31,6 +31,10 @@ public class CasualTest {
 	 */
 	public static final String ROOT_ELEMENT_NAMESPACE = "http://test.evil-co.org/2014/configuration";
 
+	/**
+	 * Tests whether an object can be marshalled successfully and decoded again afterwards.
+	 * @throws ConfigurationException
+	 */
 	@Test
 	public void processingTest () throws ConfigurationException {
 		// get processor instance
