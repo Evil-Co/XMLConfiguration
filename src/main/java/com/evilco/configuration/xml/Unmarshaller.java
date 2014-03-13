@@ -159,16 +159,19 @@ class Unmarshaller<T> extends AbstractMarshaller<T> implements IUnmarshaller {
 		Preconditions.checkNotNull (adapter, "No valid adapter could be found for type " + type.getName ());
 
 		// un-marshal into object
-		Object object = adapter.unmarshal (document, element, child, field, type);
+		if (child == null || child.getChildNodes ().getLength () > 0 || !child.getTextContent ().isEmpty ()) {
+			Object object = adapter.unmarshal (document, element, child, field, type);
 
-		// convert back
-		ITypeAdapter typeAdapter = null;
+			// convert back
+			ITypeAdapter typeAdapter = null;
 
-		// convert element
-		while ((typeAdapter = this.getTypeAdapterInstance (object)) != null) {
-			object = typeAdapter.encode (object);
-		}
+			// convert element
+			while ((typeAdapter = this.getTypeAdapterInstance (object)) != null) {
+				object = typeAdapter.encode (object);
+			}
 
-		return object;
+			return object;
+		} else
+			return null;
 	}
 }

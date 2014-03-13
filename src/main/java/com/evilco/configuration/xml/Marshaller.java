@@ -182,13 +182,16 @@ class Marshaller<T> extends AbstractMarshaller<T> implements IMarshaller<T> {
 			object = typeAdapter.encode (object);
 		}
 
-		// marshal
-		IAdapter adapter = this.getAdapterInstance (object);
+		if (object != null) {
+			// marshal
+			IAdapter adapter = this.getAdapterInstance (object);
 
-		// check adapter
-		if (adapter == null) throw new ConfigurationProcessorException ("No valid adapter could be found for type " + object.getClass ().getName ());
+			// check adapter
+			if (adapter == null) throw new ConfigurationProcessorException ("No valid adapter could be found for type " + object.getClass ().getName ());
 
-		// marshal into object
-		adapter.marshal (document, parent, child, object);
+			// marshal into object
+			adapter.marshal (document, parent, child, object);
+		} else
+			parent.appendChild (child);
 	}
 }

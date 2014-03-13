@@ -162,6 +162,7 @@ public class CasualTest {
 		Assert.assertEquals ("One of the variables does not match (enum)", testObject.enumVariable, testObject1.enumVariable);
 		Assert.assertEquals ("One of the variables does not match (float)", testObject.floatVariable, testObject1.floatVariable);
 		Assert.assertEquals ("One of the variables does not match (integer)", testObject.integerVariable, testObject1.integerVariable);
+		Assert.assertNull ("One of the variables does not match (null)", testObject1.nullVariable);
 		Assert.assertEquals ("One of the variables does not match (short)", testObject.shortVariable, testObject1.shortVariable);
 		Assert.assertEquals ("One of the variables does not match (string)", testObject.stringVariable, testObject1.stringVariable);
 		Assert.assertEquals ("One of the variables does not match (wrapped integer)", testObject.wrappedIntegerVariable, testObject1.wrappedIntegerVariable);
@@ -221,6 +222,12 @@ public class CasualTest {
 		@PropertyWrapper ("mapVariable")
 		@Property ("item")
 		public Map<String, Integer> mapVariable = new HashMap<> ();
+
+		/**
+		 * Stores a test value of type Object (null).
+		 */
+		@Property ("nullVariable")
+		public Object nullVariable = null;
 
 		/**
 		 * Stores a test value of type Object.
