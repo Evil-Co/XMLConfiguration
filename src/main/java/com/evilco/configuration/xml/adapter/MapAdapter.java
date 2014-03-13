@@ -126,10 +126,14 @@ public class MapAdapter implements IAdapter<Map> {
 		}
 
 		// find all nodes
-		NodeList nodeList = element.getElementsByTagNameNS (this.unmarshaller.getTypeConfiguration ().namespace (), child.getTagName ());
+		NodeList nodeList = element.getChildNodes ();
 
 		// append elements
 		for (int i = 0; i < nodeList.getLength (); i++) {
+			if (!(nodeList.item (i) instanceof Element)) continue;
+			if (!((Element) nodeList.item (i)).getTagName ().equalsIgnoreCase (child.getTagName ())) continue;
+
+			// convert element
 			Element currentElement = ((Element) nodeList.item (i));
 
 			// get key

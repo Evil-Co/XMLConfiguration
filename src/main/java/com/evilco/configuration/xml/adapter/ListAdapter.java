@@ -125,10 +125,14 @@ public class ListAdapter implements IAdapter<List> {
 		}
 
 		// search elements
-		NodeList elementList = element.getElementsByTagNameNS (this.unmarshaller.getTypeConfiguration ().namespace (), child.getTagName ());
+		NodeList elementList = element.getChildNodes ();
 
 		// iterate over all elements
 		for (int i = 0; i < elementList.getLength (); i++) {
+			if (!(elementList.item (i) instanceof Element)) continue;
+			if (!((Element) elementList.item (i)).getTagName ().equalsIgnoreCase (child.getTagName ())) continue;
+
+			// convert element
 			Element current = ((Element) elementList.item (i));
 
 			// un-marshal
