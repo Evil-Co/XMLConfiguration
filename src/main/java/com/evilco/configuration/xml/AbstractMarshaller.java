@@ -116,6 +116,9 @@ abstract class AbstractMarshaller<T> implements IMarshallerInterface {
 		// get fallback adapter
 		if (!type.isPrimitive () && !this.adapterMap.containsKey (type)) return ObjectAdapter.class;
 
+		// verify
+		if (!this.adapterMap.containsKey (type)) throw new AdapterInitializationException ("Could not find the appropriate adapter for type " + type.getName ());
+
 		// return explicit adapter
 		return this.adapterMap.get (type);
 	}
@@ -289,6 +292,7 @@ abstract class AbstractMarshaller<T> implements IMarshallerInterface {
 		this.registerAdapter (DoubleAdapter.class);
 		this.registerAdapter (IntegerAdapter.class);
 		this.registerAdapter (MapAdapter.class);
+		this.registerAdapter (ShortAdapter.class);
 		this.registerAdapter (ListAdapter.class);
 	}
 
