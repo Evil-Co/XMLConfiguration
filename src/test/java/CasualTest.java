@@ -45,7 +45,7 @@ public class CasualTest {
 		IUnmarshaller<ConfigurationTest> testUnmarshaller = processor.createUnmarshaller (ConfigurationTest.class);
 
 		// create test object
-		ConfigurationTest testObject = new ConfigurationTest ();
+		ConfigurationTest testObject = new ConfigurationTest (true);
 
 		// marshal object
 		Document document = testMarshaller.marshal (testObject);
@@ -57,12 +57,7 @@ public class CasualTest {
 		Assert.assertNotNull ("Un-Marshalling the document did not return a valid object", testObject1);
 
 		// verify object
-		Assert.assertEquals ("One of the variables does not match (boolean)", testObject.booleanVariable, testObject1.booleanVariable);
-		Assert.assertEquals ("One of the variables does not match (double)", testObject.doubleVariable, testObject1.doubleVariable);
-		Assert.assertEquals ("One of the variables does not match (enum)", testObject.enumVariable, testObject1.enumVariable);
-		Assert.assertEquals ("One of the variables does not match (float)", testObject.floatVariable, testObject1.floatVariable);
-		Assert.assertEquals ("One of the variables does not match (integer)", testObject.integerVariable, testObject1.integerVariable);
-		Assert.assertEquals ("One of the variables does not match (string)", testObject.stringVariable, testObject1.stringVariable);
+		verifyObject (testObject, testObject1);
 	}
 
 	/**
@@ -157,6 +152,24 @@ public class CasualTest {
 	}
 
 	/**
+	 * Verifies to objects.
+	 * @param testObject
+	 * @param testObject1
+	 */
+	public static void verifyObject (ConfigurationTest testObject, ConfigurationTest testObject1) {
+		Assert.assertEquals ("One of the variables does not match (boolean)", testObject.booleanVariable, testObject1.booleanVariable);
+		Assert.assertEquals ("One of the variables does not match (double)", testObject.doubleVariable, testObject1.doubleVariable);
+		Assert.assertEquals ("One of the variables does not match (enum)", testObject.enumVariable, testObject1.enumVariable);
+		Assert.assertEquals ("One of the variables does not match (float)", testObject.floatVariable, testObject1.floatVariable);
+		Assert.assertEquals ("One of the variables does not match (integer)", testObject.integerVariable, testObject1.integerVariable);
+		Assert.assertEquals ("One of the variables does not match (short)", testObject.shortVariable, testObject1.shortVariable);
+		Assert.assertEquals ("One of the variables does not match (string)", testObject.stringVariable, testObject1.stringVariable);
+		Assert.assertEquals ("One of the variables does not match (wrapped integer)", testObject.wrappedIntegerVariable, testObject1.wrappedIntegerVariable);
+		Assert.assertEquals ("One of the variables does not match (wrapped string)", testObject1.wrappedStringVariable, testObject1.wrappedStringVariable);
+		Assert.assertNotEquals ("The ignored variable does match", testObject.ignoredVariable, testObject1.ignoredVariable);
+	}
+
+	/**
 	 * A simple configuration test class.
 	 */
 	@Configuration (name = ROOT_ELEMENT_NAME, namespace = ROOT_ELEMENT_NAMESPACE)
@@ -172,7 +185,7 @@ public class CasualTest {
 		 * Stores a test value of type Double.
 		 */
 		@Property ("doubleVariable")
-		public Double doubleVariable = 4.2d;
+		public Double doubleVariable = 2.1d;
 
 		/**
 		 * Stores a test value of type Enum.
@@ -184,13 +197,13 @@ public class CasualTest {
 		 * Stores a test value of type Float.
 		 */
 		@Property ("floatVariable")
-		public Float floatVariable = 4.2f;
+		public Float floatVariable = 2.1f;
 
 		/**
 		 * Stores a test value of type Integer.
 		 */
 		@Property ("integerVariable")
-		public Integer integerVariable = 42;
+		public Integer integerVariable = 21;
 
 		/**
 		 * Stores a test value of type List.
@@ -198,8 +211,8 @@ public class CasualTest {
 		@PropertyWrapper ("listVariable")
 		@Property ("item")
 		public List<Integer> listVariable = new ArrayList<> (Arrays.asList (new Integer[] {
-			42,
-			21
+			33,
+			81
 		}));
 
 		/**
@@ -216,10 +229,30 @@ public class CasualTest {
 		public ConfigurationTestInner objectVariable = new ConfigurationTestInner ();
 
 		/**
+		 * Stores a test value of type Short.
+		 */
+		@Property ("shortVariable")
+		public Short shortVariable = 21;
+
+		/**
 		 * Stores a test value of type String.
 		 */
 		@Property ("stringVariable")
 		public String stringVariable = "Test1";
+
+		/**
+		 * Stores a wrapped test value of type Integer.
+		 */
+		@PropertyWrapper ("wrapper")
+		@Property ("integerVariable")
+		public Integer wrappedIntegerVariable = 21;
+
+		/**
+		 * Stores a wrapped test value of type String.
+		 */
+		@PropertyWrapper ("wrapper")
+		@Property ("stringVariable")
+		public String wrappedStringVariable = "Test1";
 
 		/**
 		 * Stores a test value.
@@ -229,9 +262,30 @@ public class CasualTest {
 		/**
 		 * Constructs a new ConfigurationTest instance.
 		 */
-		public ConfigurationTest () {
+		public ConfigurationTest () { }
+
+		/**
+		 * Constructs a new ConfigurationTest instance.
+		 */
+		public ConfigurationTest (boolean a) {
+			this.booleanVariable = true;
+			this.doubleVariable = 42d;
+			this.enumVariable = ConfigurationEnum.B;
+			this.floatVariable = 42.0f;
+			this.ignoredVariable = false;
+			this.integerVariable = 42;
+			this.listVariable = new ArrayList<> (Arrays.asList (new Integer[] {
+				42,
+				21
+			}));
+			this.mapVariable = new HashMap<> ();
 			this.mapVariable.put ("TheAnswer", 42);
 			this.mapVariable.put ("NotQuiteTheRightAnswer", 21);
+			this.objectVariable = new ConfigurationTestInner ();
+			this.shortVariable = 42;
+			this.stringVariable = "Test2";
+			this.wrappedIntegerVariable = 42;
+			this.wrappedStringVariable = "Test2";
 		}
 	}
 

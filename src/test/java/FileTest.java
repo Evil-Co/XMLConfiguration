@@ -39,7 +39,7 @@ public class FileTest {
 		if (file.exists ()) file.delete ();
 
 		// create test object
-		CasualTest.ConfigurationTest testObject = new CasualTest.ConfigurationTest ();
+		CasualTest.ConfigurationTest testObject = new CasualTest.ConfigurationTest (true);
 
 		// marshal & save
 		ConfigurationProcessor.getInstance ().save (testObject, file);
@@ -49,6 +49,9 @@ public class FileTest {
 		Assert.assertNotEquals ("The file seems to be empty (file size of 0)", 0, file.length ());
 
 		// load & unmarshal
-		ConfigurationProcessor.getInstance ().load (file, CasualTest.ConfigurationTest.class);
+		CasualTest.ConfigurationTest testObject1 = ConfigurationProcessor.getInstance ().load (file, CasualTest.ConfigurationTest.class);
+
+		// verify
+		CasualTest.verifyObject (testObject, testObject1);
 	}
 }
