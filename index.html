@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Xmlconfiguration by Evil-Co</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Xmlconfiguration</h1>
+        <h2>Allows to create configuration parsers in Java lightning fast.</h2>
+        <a href="https://github.com/Evil-Co/XMLConfiguration" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="xml-configuration-for-java-7" class="anchor" href="#xml-configuration-for-java-7"><span class="octicon octicon-link"></span></a>XML Configuration for Java 7+</h1>
+
+<p>This library allows you to easily created XML based configurations in Java via annotations. The following examples will show you the basics of how to transform your class into a configuration file.</p>
+
+<h2>
+<a name="preparation" class="anchor" href="#preparation"><span class="octicon octicon-link"></span></a>Preparation</h2>
+
+<p>For reading and/or writing a configuration file you will need to create a storage class which will hold the actual data.</p>
+
+<p>Each field you would like to serialize needs to be annotated with the <code>@Property</code> annotation with an element name as it's argument (as example "testVariable").</p>
+
+<pre><code>@Configuration
+class ApplicationConfiguration {
+
+    @Property ("testFeatureEnabled")
+    public Boolean testFeatureEnabled = false;
+
+    public ApplicationConfiguration () { }
+}
+</code></pre>
+
+<p>Please note that all fields need to be visible in order to be "seen" by the library and all primitive types need to use their respective class version to allow proper un-marshalling. Additionally a
+default no-argument constructor needs to be available in all configuration storage classes.</p>
+
+<h2>
+<a name="types" class="anchor" href="#types"><span class="octicon octicon-link"></span></a>Types</h2>
+
+<p>The library by default allows a lot of different types including most primitives, objects (e.g. classes which contain properties which are annotated with <code>@Property</code>), Lists (please note that lists
+might require an <code>@PropertyWrapper</code> annotation to produce proper results and Maps (the rules mentioned for Lists do apply).</p>
+
+<p>As example you are able to wrap a list with the following annotation sequence:</p>
+
+<pre><code>    // ...
+    @Property ("item")
+    @PropertyWrapper ("testList")
+    public List&lt;String&gt; testList = new ArrayList&lt;&gt; ();
+    // ...
+</code></pre>
+
+<p>The above example will create an element called <code>&lt;testList&gt;</code> which will contain all list items wrapped in <code>item</code> elements. The same applies to map elements. Please note that extensions of lists might
+require an annotation called <code>@InnerType</code> in order to allow the library to properly decode the contents (this can also be used to declare a specific implementation of X to be used to fill a list or map).
+Please also note that map indexes are currently limited to strings.</p>
+
+<h2>
+<a name="comments" class="anchor" href="#comments"><span class="octicon octicon-link"></span></a>Comments</h2>
+
+<p>Additionally to the default features the library also allows you to add comments to your properties to help users to understand the property. To add a comment in front of a variable you will need to add
+an annotation called <code>@Comment</code> to your property:</p>
+
+<pre><code>    // ...
+    @Property ("testVariable")
+    @Comment ("This is a test")
+    public boolean testVariable = true;
+    // ...
+</code></pre>
+
+<p>For more advanced usage of this library please refer to the sourcecode on GitHub.</p>
+
+<h2>
+<a name="maven" class="anchor" href="#maven"><span class="octicon octicon-link"></span></a>Maven</h2>
+
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.evilco.configuration&lt;/groupId&gt;
+    &lt;artifactId&gt;xml&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>Additionally you might need to add our repository to your repository list:</p>
+
+<pre><code>&lt;repository&gt;
+    &lt;id&gt;evil-co&lt;/id&gt;
+    &lt;url&gt;http://nexus.evil-co.org/content/repositories/free-snapshots/&lt;/url&gt;
+
+    &lt;snapshots&gt;
+        &lt;enabled&gt;true&lt;/enabled&gt;
+    &lt;/snapshots&gt;
+&lt;/repository&gt;
+</code></pre>
+
+<h2>
+<a name="bugs--feature-requests" class="anchor" href="#bugs--feature-requests"><span class="octicon octicon-link"></span></a>Bugs &amp; Feature Requests</h2>
+
+<p>You can submit bug reports and feature requests in our <a href="https://evilco.atlassian.net/browse/XCNF">Bugtracker</a>.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/Evil-Co/XMLConfiguration/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/Evil-Co/XMLConfiguration/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/Evil-Co/XMLConfiguration"></a> is maintained by <a href="https://github.com/Evil-Co">Evil-Co</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
