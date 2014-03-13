@@ -92,11 +92,12 @@ public class ListAdapter implements IAdapter<List> {
 		Preconditions.checkNotNull (field, "Lists are required to be inside of objects and cannot be nested."); // FIXME: We might be able to work around this
 
 		// find type
-		ParameterizedType parameterizedType = (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ()));
-		Class<?> listType = ((Class<?>) parameterizedType.getActualTypeArguments ()[0]);
+		Class<?> listType = null;
 
-		// correct type
-		if (field.isAnnotationPresent (InnerType.class)) listType = field.getAnnotation (InnerType.class).value ();
+		if (!field.getType ().isAnnotationPresent (InnerType.class))
+			listType = ((Class<?>) (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ())).getActualTypeArguments ()[0]);
+		else
+			listType = field.getType ().getAnnotation (InnerType.class).value ();
 
 		// create new list
 		List instance = null;

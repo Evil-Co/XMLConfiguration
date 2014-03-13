@@ -95,11 +95,13 @@ public class MapAdapter implements IAdapter<Map> {
 	@Override
 	public Map unmarshal (Document document, Element element, Element child, Field field, Class<?> type) throws ConfigurationException {
 		// get type
-		ParameterizedType parameterizedType = (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ()));
-		Class<?> mapType = ((Class<?>) parameterizedType.getActualTypeArguments ()[1]);
+		// find type
+		Class<?> mapType = null;
 
-		// correct type
-		if (field.isAnnotationPresent (InnerType.class)) mapType = field.getAnnotation (InnerType.class).value ();
+		if (!field.getType ().isAnnotationPresent (InnerType.class))
+			mapType = ((Class<?>) (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ())).getActualTypeArguments ()[0]);
+		else
+			mapType = field.getType ().getAnnotation (InnerType.class).value ();
 
 		// create map
 		Map<String, Object> map = null;
