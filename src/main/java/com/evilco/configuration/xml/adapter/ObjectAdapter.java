@@ -176,14 +176,26 @@ public class ObjectAdapter implements IAdapter<Object> {
 			}
 
 			// find field
-			NodeList fieldList = parent.getElementsByTagNameNS (this.unmarshaller.getTypeConfiguration ().namespace (), objectField.getAnnotation (Property.class).value ());
 			Element fieldElement = null;
 
 			// find field element (or create dummy)
-			if (fieldList.getLength () == 0 ||fieldList.getLength () > 1)
-				fieldElement = document.createElementNS (this.unmarshaller.getTypeConfiguration ().namespace (), objectField.getAnnotation (Property.class).value ());
-			else
-				fieldElement = ((Element) fieldList.item (0));
+			NodeList nodeList = parent.getChildNodes ();
+
+			for (int i = 0; i < nodeList.getLength (); i++) {
+				if (!(nodeList.item (i) instanceof Element)) continue;
+
+				// get element
+				Element currentElement = ((Element) nodeList.item (i));
+
+				// check
+				if (!currentElement.getTagName ().equalsIgnoreCase (objectField.getAnnotation (Property.class).value ())) continue;
+
+				// okay!
+				fieldElement = currentElement;
+			}
+
+			// fill field
+			if (fieldElement == null) fieldElement = document.createElementNS (this.unmarshaller.getTypeConfiguration ().namespace (), objectField.getAnnotation (Property.class).value ());
 
 			// un-marshal
 			try {
