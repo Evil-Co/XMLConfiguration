@@ -11,8 +11,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
+import java.lang.reflect.*;
 
 /**
  * @auhtor Johannes Donath <johannesd@evil-co.com>
@@ -70,6 +69,17 @@ public class ObjectAdapter implements IAdapter<Object> {
 
 		// serialize data (if any)
 		if (object != null) {
+			// search method for generic typing
+			try {
+				for (Method method : object.getClass ().getMethods ()) {
+					if (!method.isAnnotationPresent (TypeMethod.class)) continue;
+					method.setAccessible (true);
+					child.setAttributeNS (this.marshaller.getTypeConfiguration ().namespace (), "generic", ((Class<?>) method.invoke (object)).getName ());
+				}
+			} catch (Exception ex) {
+				throw new ConfigurationProcessorException (ex);
+			}
+
 			// iterate over fields
 			for (Field field : object.getClass ().getFields ()) {
 				// skip normal fields
@@ -197,16 +207,25 @@ public class ObjectAdapter implements IAdapter<Object> {
 			// fill field
 			if (fieldElement == null) fieldElement = document.createElementNS (this.unmarshaller.getTypeConfiguration ().namespace (), objectField.getAnnotation (Property.class).value ());
 
+			// get type
+			Class<?> fieldType = objectField.getType ();
+
+			try {
+				if (parent.hasAttributeNS (this.unmarshaller.getTypeConfiguration ().namespace (), "generic")) fieldType = Class.forName (parent.getAttributeNS (this.unmarshaller.getTypeConfiguration ().namespace (), "generic"));
+			} catch (ClassNotFoundException ex) {
+				throw new ConfigurationProcessorException (ex);
+			}
+
 			// un-marshal
 			try {
 				if (objectField.getType ().isAnnotationPresent (Configuration.class)) {
 					IUnmarshaller fieldMarshaller = this.processor.createUnmarshaller (objectField.getType ());
 
 					// marshal field
-					objectField.set (instance, fieldMarshaller.unmarshal (document, parent, fieldElement, objectField, objectField.getType ()));
+					objectField.set (instance, fieldMarshaller.unmarshal (document, parent, fieldElement, objectField, fieldType));
 				} else
 					// forcefully marshal
-					objectField.set (instance, this.unmarshaller.unmarshal (document, parent, fieldElement, objectField, objectField.getType ()));
+					objectField.set (instance, this.unmarshaller.unmarshal (document, parent, fieldElement, objectField, fieldType));
 			} catch (IllegalAccessException ex) {
 				throw new ConfigurationProcessorException (ex);
 			}
