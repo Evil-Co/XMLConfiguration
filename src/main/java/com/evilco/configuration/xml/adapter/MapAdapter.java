@@ -98,8 +98,10 @@ public class MapAdapter implements IAdapter<Map> {
 		// find type
 		Class<?> mapType = null;
 
-		if (!field.getType ().isAnnotationPresent (InnerType.class))
-			mapType = ((Class<?>) (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ())).getActualTypeArguments ()[0]);
+		if (!field.getType ().isAnnotationPresent (InnerType.class) && !field.isAnnotationPresent (InnerType.class))
+			mapType = ((Class<?>) (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ())).getActualTypeArguments ()[1]);
+		else if (field.isAnnotationPresent (InnerType.class))
+			mapType = field.getAnnotation (InnerType.class).value ();
 		else
 			mapType = field.getType ().getAnnotation (InnerType.class).value ();
 

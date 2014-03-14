@@ -94,8 +94,10 @@ public class ListAdapter implements IAdapter<List> {
 		// find type
 		Class<?> listType = null;
 
-		if (!field.getType ().isAnnotationPresent (InnerType.class))
+		if (!field.getType ().isAnnotationPresent (InnerType.class) && !field.isAnnotationPresent (InnerType.class))
 			listType = ((Class<?>) (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ())).getActualTypeArguments ()[0]);
+		else if (field.isAnnotationPresent (InnerType.class))
+			listType = field.getAnnotation (InnerType.class).value ();
 		else
 			listType = field.getType ().getAnnotation (InnerType.class).value ();
 
