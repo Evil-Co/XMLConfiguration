@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
  * @auhtor Johannes Donath <johannesd@evil-co.com>
  * @copyright Copyright (C) 2014 Evil-Co <http://www.evil-co.org>
  */
-@AdapterDefinition (input = Float.class)
+@AdapterDefinition (input = Float.class, sharable = true)
 public class FloatAdapter implements IAdapter<Float> {
 
 	/**

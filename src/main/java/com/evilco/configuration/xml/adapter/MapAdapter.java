@@ -24,7 +24,7 @@ import java.util.Set;
  * @auhtor Johannes Donath <johannesd@evil-co.com>
  * @copyright Copyright (C) 2014 Evil-Co <http://www.evil-co.org>
  */
-@AdapterDefinition (input = Map.class, matchChildren = true)
+@AdapterDefinition (input = Map.class, matchChildren = true, sharable = true)
 public class MapAdapter implements IAdapter<Map> {
 
 	/**

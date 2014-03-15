@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
  * @copyright Copyright (C) 2014 Evil-Co <http://www.evil-co.org>
  * @fixme Unmarshalling seems to not work here for whatever reason (empty text content)
  */
-@AdapterDefinition (input = Double.class)
+@AdapterDefinition (input = Double.class, sharable = true)
 public class DoubleAdapter implements IAdapter<Double> {
 
 	/**

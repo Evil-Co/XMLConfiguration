@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
  * @auhtor Johannes Donath <johannesd@evil-co.com>
  * @copyright Copyright (C) 2014 Evil-Co <http://www.evil-co.org>
  */
-@AdapterDefinition (input = Integer.class)
+@AdapterDefinition (input = Integer.class, sharable = true)
 public class IntegerAdapter implements IAdapter<Integer> {
 
 	/**

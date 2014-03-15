@@ -24,7 +24,7 @@ import java.util.List;
  * @auhtor Johannes Donath <johannesd@evil-co.com>
  * @copyright Copyright (C) 2014 Evil-Co <http://www.evil-co.org>
  */
-@AdapterDefinition (input = List.class, matchChildren = true)
+@AdapterDefinition (input = List.class, matchChildren = true, sharable = true)
 public class ListAdapter implements IAdapter<List> {
 
 	/**

@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
  * @auhtor Johannes Donath <johannesd@evil-co.com>
  * @copyright Copyright (C) 2014 Evil-Co <http://www.evil-co.org>
  */
-@AdapterDefinition (input = Enum.class, matchChildren = true)
+@AdapterDefinition (input = Enum.class, matchChildren = true, sharable = true)
 public class EnumAdapter implements IAdapter<Enum> {
 
 	/**
