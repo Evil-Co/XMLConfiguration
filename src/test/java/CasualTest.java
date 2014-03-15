@@ -165,6 +165,7 @@ public class CasualTest {
 		Assert.assertNull ("One of the variables does not match (null)", testObject1.nullVariable);
 		Assert.assertEquals ("One of the variables does not match (short)", testObject.shortVariable, testObject1.shortVariable);
 		Assert.assertEquals ("One of the variables does not match (string)", testObject.stringVariable, testObject1.stringVariable);
+		Assert.assertEquals ("One of the variables does not match (UUID)", testObject.uuidVariable.toString (), testObject1.uuidVariable.toString ());
 		Assert.assertEquals ("One of the variables does not match (wrapped integer)", testObject.wrappedIntegerVariable, testObject1.wrappedIntegerVariable);
 		Assert.assertEquals ("One of the variables does not match (wrapped string)", testObject1.wrappedStringVariable, testObject1.wrappedStringVariable);
 		Assert.assertNotEquals ("The ignored variable does match", testObject.ignoredVariable, testObject1.ignoredVariable);
@@ -248,6 +249,12 @@ public class CasualTest {
 		public String stringVariable = "Test1";
 
 		/**
+		 * Stores a test value of type UUID.
+		 */
+		@Property ("uuidVariable")
+		public UUID uuidVariable = UUID.randomUUID ();
+
+		/**
 		 * Stores a wrapped test value of type Integer.
 		 */
 		@PropertyWrapper ("wrapper")
@@ -291,6 +298,7 @@ public class CasualTest {
 			this.objectVariable = new ConfigurationTestInner ();
 			this.shortVariable = 42;
 			this.stringVariable = "Test2";
+			this.uuidVariable = UUID.randomUUID ();
 			this.wrappedIntegerVariable = 42;
 			this.wrappedStringVariable = "Test2";
 		}

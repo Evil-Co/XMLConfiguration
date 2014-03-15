@@ -294,6 +294,7 @@ abstract class AbstractMarshaller<T> implements IMarshallerInterface {
 		this.registerAdapter (MapAdapter.class);
 		this.registerAdapter (ShortAdapter.class);
 		this.registerAdapter (ListAdapter.class);
+		this.registerAdapter (UUIDAdapter.class);
 	}
 
 	/**
