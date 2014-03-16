@@ -259,7 +259,7 @@ public class CasualTest {
 		 */
 		@PropertyWrapper ("wrapper")
 		@Property ("integerVariable")
-		public Integer wrappedIntegerVariable = 21;
+		public Integer wrappedIntegerVariable = 22;
 
 		/**
 		 * Stores a wrapped test value of type String.
@@ -299,7 +299,7 @@ public class CasualTest {
 			this.shortVariable = 42;
 			this.stringVariable = "Test2";
 			this.uuidVariable = UUID.randomUUID ();
-			this.wrappedIntegerVariable = 42;
+			this.wrappedIntegerVariable = 41;
 			this.wrappedStringVariable = "Test2";
 		}
 	}
