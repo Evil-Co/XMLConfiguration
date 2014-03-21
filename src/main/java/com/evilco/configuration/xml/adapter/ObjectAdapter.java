@@ -74,7 +74,7 @@ public class ObjectAdapter implements IAdapter<Object> {
 				for (Method method : object.getClass ().getMethods ()) {
 					if (!method.isAnnotationPresent (TypeMethod.class)) continue;
 					method.setAccessible (true);
-					child.setAttributeNS (this.marshaller.getTypeConfiguration ().namespace (), "generic", ((Class<?>) method.invoke (object)).getName ());
+					child.setAttribute ("generic", ((Class<?>) method.invoke (object)).getName ());
 				}
 			} catch (Exception ex) {
 				throw new ConfigurationProcessorException (ex);
@@ -211,7 +211,7 @@ public class ObjectAdapter implements IAdapter<Object> {
 			Class<?> fieldType = objectField.getType ();
 
 			try {
-				if (parent.hasAttributeNS (this.unmarshaller.getTypeConfiguration ().namespace (), "generic")) fieldType = Class.forName (parent.getAttributeNS (this.unmarshaller.getTypeConfiguration ().namespace (), "generic"));
+				if (parent.hasAttribute ("generic")) fieldType = Class.forName (parent.getAttribute ("generic"));
 			} catch (ClassNotFoundException ex) {
 				throw new ConfigurationProcessorException (ex);
 			}

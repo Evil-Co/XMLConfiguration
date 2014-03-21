@@ -73,7 +73,7 @@ public class MapAdapter implements IAdapter<Map> {
 			Element entryElement = ((Element) child.cloneNode (false));
 
 			// add key
-			entryElement.setAttributeNS (this.marshaller.getTypeConfiguration ().namespace (), "key", ((String) entry.getKey ()));
+			entryElement.setAttribute ("key", ((String) entry.getKey ()));
 
 			// marshal
 			if (entry.getValue ().getClass ().isAnnotationPresent (Configuration.class)) {
@@ -139,7 +139,7 @@ public class MapAdapter implements IAdapter<Map> {
 			Element currentElement = ((Element) nodeList.item (i));
 
 			// get key
-			String key = currentElement.getAttributeNS (this.unmarshaller.getTypeConfiguration ().namespace (), "key");
+			String key = currentElement.getAttribute ("key");
 
 			// unmarshal
 			if (mapType.isAnnotationPresent (Configuration.class)) {
