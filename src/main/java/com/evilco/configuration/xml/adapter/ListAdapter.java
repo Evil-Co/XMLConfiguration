@@ -4,8 +4,8 @@ import com.evilco.configuration.xml.ConfigurationProcessor;
 import com.evilco.configuration.xml.IMarshaller;
 import com.evilco.configuration.xml.IUnmarshaller;
 import com.evilco.configuration.xml.annotation.AdapterDefinition;
+import com.evilco.configuration.xml.annotation.CollectionType;
 import com.evilco.configuration.xml.annotation.Configuration;
-import com.evilco.configuration.xml.annotation.InnerType;
 import com.evilco.configuration.xml.exception.ConfigurationException;
 import com.evilco.configuration.xml.exception.ConfigurationProcessorException;
 import com.evilco.configuration.xml.exception.ConfigurationSetupException;
@@ -94,12 +94,12 @@ public class ListAdapter implements IAdapter<List> {
 		// find type
 		Class<?> listType = null;
 
-		if (!field.getType ().isAnnotationPresent (InnerType.class) && !field.isAnnotationPresent (InnerType.class))
+		if (!field.getType ().isAnnotationPresent (CollectionType.class) && !field.isAnnotationPresent (CollectionType.class))
 			listType = ((Class<?>) (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ())).getActualTypeArguments ()[0]);
-		else if (field.isAnnotationPresent (InnerType.class))
-			listType = field.getAnnotation (InnerType.class).value ();
+		else if (field.isAnnotationPresent (CollectionType.class))
+			listType = field.getAnnotation (CollectionType.class).value ();
 		else
-			listType = field.getType ().getAnnotation (InnerType.class).value ();
+			listType = field.getType ().getAnnotation (CollectionType.class).value ();
 
 		// create new list
 		List instance = null;
