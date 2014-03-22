@@ -4,8 +4,9 @@ import com.evilco.configuration.xml.ConfigurationProcessor;
 import com.evilco.configuration.xml.IMarshaller;
 import com.evilco.configuration.xml.IUnmarshaller;
 import com.evilco.configuration.xml.annotation.AdapterDefinition;
+import com.evilco.configuration.xml.annotation.Factory;
+import com.evilco.configuration.xml.annotation.MapType;
 import com.evilco.configuration.xml.annotation.Configuration;
-import com.evilco.configuration.xml.annotation.InnerType;
 import com.evilco.configuration.xml.exception.ConfigurationException;
 import com.evilco.configuration.xml.exception.ConfigurationProcessorException;
 import com.evilco.configuration.xml.exception.ConfigurationSetupException;
@@ -15,6 +16,7 @@ import org.w3c.dom.NodeList;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
@@ -94,19 +96,26 @@ public class MapAdapter implements IAdapter<Map> {
 	 */
 	@Override
 	public Map unmarshal (Document document, Element element, Element child, Field field, Class<?> type) throws ConfigurationException {
-		// get type
 		// find type
+		Class<?> keyType = null;
 		Class<?> mapType = null;
 
-		if (!field.getType ().isAnnotationPresent (InnerType.class) && !field.isAnnotationPresent (InnerType.class))
+		if (!field.getType ().isAnnotationPresent (MapType.class) && !field.isAnnotationPresent (MapType.class))
 			mapType = ((Class<?>) (field.getGenericType () instanceof ParameterizedType ? ((ParameterizedType) field.getGenericType ()) : ((ParameterizedType) field.getType ().getGenericSuperclass ())).getActualTypeArguments ()[1]);
-		else if (field.isAnnotationPresent (InnerType.class))
-			mapType = field.getAnnotation (InnerType.class).value ();
+		else if (field.isAnnotationPresent (MapType.class))
+			mapType = field.getAnnotation (MapType.class).value ();
 		else
-			mapType = field.getType ().getAnnotation (InnerType.class).value ();
+			mapType = field.getType ().getAnnotation (MapType.class).value ();
+
+		if (!field.getType ().isAnnotationPresent (MapType.class) && !field.isAnnotationPresent (MapType.class))
+			keyType = String.class;
+		else if (field.isAnnotationPresent (MapType.class))
+			keyType = field.getAnnotation (MapType.class).key ();
+		else
+			keyType = field.getType ().getAnnotation (MapType.class).key ();
 
 		// create map
-		Map<String, Object> map = null;
+		Map<Object, Object> map = null;
 
 		if (field.getGenericType () instanceof ParameterizedType)
 			map = new HashMap<> ();
@@ -139,7 +148,43 @@ public class MapAdapter implements IAdapter<Map> {
 			Element currentElement = ((Element) nodeList.item (i));
 
 			// get key
-			String key = currentElement.getAttribute ("key");
+			Object key = currentElement.getAttribute ("key");
+
+			// convert key
+			if (!keyType.equals (String.class)) {
+				boolean constructed = false;
+
+				// search method
+				for (Method method : keyType.getMethods ()) {
+					// find factory method
+					try {
+						// check for annotation
+						if (!method.isAnnotationPresent (Factory.class)) continue;
+
+						// construct key object
+						key = method.invoke (null, key);
+
+						// done
+						constructed = true;
+
+						// exit loop
+						break;
+					} catch (Exception ex) { }
+				}
+
+				// search constructor
+				if (!constructed) {
+					try {
+						// get constructor with String argument type
+						Constructor<?> constructor = keyType.getConstructor (String.class);
+
+						// create a new instance
+						constructor.newInstance (key);
+					} catch (Exception ex) {
+						throw new ConfigurationProcessorException (ex);
+					}
+				}
+			}
 
 			// unmarshal
 			if (mapType.isAnnotationPresent (Configuration.class)) {
