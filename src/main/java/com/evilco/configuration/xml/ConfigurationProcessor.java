@@ -109,10 +109,18 @@ public class ConfigurationProcessor {
 	 * @throws ConfigurationException
 	 */
 	public <T> T load (File file, Class<T> type) throws ConfigurationException {
+		FileInputStream inputStream = null;
+
 		try {
-			return this.load (new FileInputStream (file), type);
+			inputStream = new FileInputStream (file);
+
+			return this.load (inputStream, type);
 		} catch (FileNotFoundException ex) {
 			throw new ConfigurationProcessorException (ex);
+		} finally {
+			try {
+				inputStream.close ();
+			} catch (Exception ex) { }
 		}
 	}
 
@@ -156,10 +164,18 @@ public class ConfigurationProcessor {
 	 * @throws ConfigurationException
 	 */
 	public void save (Object object, File file) throws ConfigurationException {
+		FileOutputStream outputStream = null;
+
 		try {
-			this.save (object, new FileOutputStream (file));
+			outputStream = new FileOutputStream (file);
+
+			this.save (object, outputStream);
 		} catch (IOException ex) {
 			throw new ConfigurationProcessorException (ex);
+		} finally {
+			try {
+				outputStream.close ();
+			} catch (Exception ex) { }
 		}
 	}
 
