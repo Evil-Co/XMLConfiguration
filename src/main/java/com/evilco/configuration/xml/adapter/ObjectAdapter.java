@@ -81,7 +81,10 @@ public class ObjectAdapter implements IAdapter<Object> {
 			}
 
 			// iterate over fields
-			for (Field field : object.getClass ().getFields ()) {
+			for (Field field : object.getClass ().getDeclaredFields ()) {
+				// make accessible
+				if (!Modifier.isPublic (field.getModifiers ()) || !Modifier.isPublic (field.getDeclaringClass ().getModifiers ())) field.setAccessible (true);
+
 				// skip normal fields
 				if (!field.isAnnotationPresent (Property.class)) continue;
 
@@ -104,9 +107,6 @@ public class ObjectAdapter implements IAdapter<Object> {
 
 				// create element for current field
 				Element fieldElement = document.createElementNS (this.marshaller.getTypeConfiguration ().namespace (), field.getAnnotation (Property.class).value ());
-
-				// make field accessible
-				field.setAccessible (true);
 
 				// add comments
 				if (field.isAnnotationPresent (Comment.class)) {
@@ -165,9 +165,9 @@ public class ObjectAdapter implements IAdapter<Object> {
 		}
 
 		// iterate over fields
-		for (Field objectField : type.getFields ()) {
-			// make field accessible
-			objectField.setAccessible (true);
+		for (Field objectField : type.getDeclaredFields ()) {
+			// make accessible
+			if (!Modifier.isPublic (objectField.getModifiers ()) || !Modifier.isPublic (objectField.getDeclaringClass ().getModifiers ())) objectField.setAccessible (true);
 
 			// skip ignored fields
 			if (!objectField.isAnnotationPresent (Property.class)) continue;
